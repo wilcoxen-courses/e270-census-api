@@ -187,7 +187,8 @@ It will be used in the next step to check the aggregation.
 
 1. Compute the percent of the population in each aggregate group by setting 
 `pct` to the result of multiplying 100 times `by_level` with the `.div()` 
-method applied to it with the arguments `by_level['total']` and `axis=index`.
+method applied to it with the arguments `by_level['total']` and 
+`axis='index'`.
 
 1. Print `pct['<hs'].sort_values()`, which will be the share of the 
 population with less than a high school education sorted from lowest to 
