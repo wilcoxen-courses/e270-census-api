@@ -21,6 +21,6 @@ TBD
 4. How many counties have values of `ratio` that are below 0.5? You 
 can count them by hand or you could compute `(ratio<0.5).sum()`, which 
 will generate a vector with 1's where `ratio` is below 0.5 and 0's 
-everywhere else, and then sums it up.
+everywhere else, and then sum it up.
 
 TBD
