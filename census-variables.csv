@@ -19,8 +19,8 @@ B15003_017E,Regular high school diploma,hs
 B15003_018E,GED or alternative credential,hs
 B15003_019E,"Some college, less than 1 year",some col
 B15003_020E,"Some college, 1 or more years, no degree",some col
-B15003_021E,"Associate's degree",some col
-B15003_022E,"Bachelor's degree",ba
-B15003_023E,Master's degree,grad
-B15003_024E,Professional school degree,grad
-B15003_025E,Doctorate degree,grad
+B15003_021E,Associate's degree,some col
+B15003_022E,Bachelor's degree,ba+
+B15003_023E,Master's degree,ba+
+B15003_024E,Professional school degree,ba+
+B15003_025E,Doctorate degree,ba+
