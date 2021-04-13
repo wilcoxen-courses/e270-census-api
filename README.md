@@ -122,7 +122,7 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Generate a matrix of scatter plots comparing the educational attainment levels by quintile by setting `pairs` equal to the result of calling `sns.pairplot()` with arguments `pct` and `hue="quint"`. The diagonal will be a set of overlapping density plots for each level of education in each quintile, and the off-diagonal elements will be pairwise scatter plots.
 
-1. Save the figure by calling `.savefig()` on `paris` with arguments `"scatter.png"` and `dpi=300`.
+1. Save the figure by calling `.savefig()` on `pairs` with arguments `"scatter.png"` and `dpi=300`.
 
 **D. Markdown file results.md**
 
