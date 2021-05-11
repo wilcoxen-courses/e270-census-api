@@ -8,7 +8,7 @@ From the data you printed, what county has the largest population share with les
 TBD
 
 ## Question 2
-From the diagonal panels of the figure, how do the quintiles compare in terms of the fraction of the population with less than a high school education? Specifically: are they roughly the same or do some quintiles differ noticably from the others?
+From the diagonal panels of the figure, how do the quintiles compare in terms of the fraction of the population with less than a high school education? Specifically: are they roughly the same or do some quintiles differ noticeably from the others?
 
 TBD
 
