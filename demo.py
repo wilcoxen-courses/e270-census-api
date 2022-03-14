@@ -1,7 +1,9 @@
-#! /bin/python3
-#  PAI789 (PJW)
-#
-#%%
+"""
+demo.py
+Spring 2022 PJW
+
+Demonstrate the Census API.
+"""
 
 import requests
 import pandas as pd
@@ -67,7 +69,7 @@ print( response.text )
 #  Turn the result into a dataframe and do some work with it
 #
 
-rows = response.json() 
+rows = response.json()
 
 colnames = rows[0]
 datarows = rows[1:]
