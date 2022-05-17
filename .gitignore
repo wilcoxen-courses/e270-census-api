@@ -33,4 +33,4 @@ makefile
 *.pkl
 *.zip
 
-! census-variables.csv
+!variable-info.csv
