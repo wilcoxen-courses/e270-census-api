@@ -48,19 +48,17 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Set `response` to the value of calling `requests.get()` with arguments `api` and `payload`. The call will build an HTTPS query string, send it to the API endpoint, and collect the response.
 
-1. Use an `if` statement to test whether `response.status_code` is equal to 200, the HTTP status code for success. If so, print a message indicating that the request succeeded.
+1. Use an `if` statement to test whether `response.status_code` is not equal to 200, the HTTP status code for success. If so, within the `if` block print `response.status_code` and then print `response.text`, which may provide a little more detail about what went wrong. See item 1 in the Tips section for more information about errors.
 
-1. Add an `else` statement. Within the `else` block print `response.status_code` and then print `response.text`, which may provide a little more detail about what went wrong. See the Tips section below for more information about errors.
-
-1. Still within the `else` block add the following statement:
+1. Still within the `if` block add the following statement:
 
     ```python
     assert False
     ```
 
-    This will cause the script to stop immediately if the statement is reached. Assert statements are a very useful tool for writing reliable scripts; see the Tips section for more information.
+    This will cause the script to stop immediately if the statement is reached. Assert statements are a very useful tool for writing reliable scripts; see item 2 in the Tips section for more information.
 
-1. After the end of the `else` block, set `row_list` to the result of calling the `.json()` method of `response`. That will parse the JSON returned by the Census server and return a list of rows. Be sure to note that the call is a method build into `response`: you do not need to import the JSON module.
+1. After the end of the `if` block, set `row_list` to the result of calling the `.json()` method of `response`. That will parse the JSON returned by the Census server and return a list of rows. Be sure to note that the call is a method build into `response`: you do not need to import the JSON module.
 
 1. Set `colnames` to the first row of `row_list` via `row_list[0]`.
 
@@ -88,19 +86,23 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Set `var_info` to the result of using `pd.read_csv()` to read `'variable-info.csv'`. Unlike the first time, however, include an additional argument to set the index to the variable name: `index_col='variable'`. This will be convenient later when we aggregate the variables.
 
-1. Set `var_group` to the `'group'` column of `var_info`. This will be a handy link between the names of the Census variables, which are the index of the series, and the aggregate educational attainment groups, which are the values of the series.
+1. Set `var_group` to the `'group'` column of `var_info`. This will be a handy link between the names of the Census variables, which are the index of the series, and the aggregate educational attainment groups, which are the values of the series. See item 3 in the Tips section for why it's handy to use a CSV file for defining how variables should be aggregated.
 
 1. Print `var_group`. It's a Pandas series and it will be helpful to see it when you're setting up the `groupby()` call below.
 
 1. Set `attain` to the result of using `pd.read_csv()` to read `'census-data.csv'`. Use the argument `index_col='NAME'` to set the index to the column of county names.
 
-1. Set `group_by_level` to the result of applying the `.groupby()` method to `attain` using the arguments `var_group`, `axis='columns'`, and `sort=False`. The `axis='columns'` argument indicates that what's to be combined are columns. The first argument, `var_group`, will be used used like a dictionary to do the grouping: `groupby()` will look up each column of `attain` in the index of `var_group` and will then use the corresponding value of `var_group` (e.g., `"hs"`) as the column's group. The `sort` argument keeps the new groups in the original order rather than sorting them alphabetically. That's handy because it keeps the columns in increasing order of educational attainment, which is more intuitive than an alphabetical list.
+1. Set `attain_tr` to the transpose of `attain` by applying the `.T` operator: `attain.T`. See item 4 in the Tips section for why it's necessary to transpose the data at this point.
 
-1. Set `by_level` to the result of applying the `.sum()` method to `group_by_level`. That does the aggregation.
+1. Set `group_by_level` to the result of applying the `.groupby()` method to `attain_tr` using the arguments `var_group` and `sort=False`. The first argument, `var_group`, will be used used like a dictionary to do the grouping: `groupby()` will look up each row of `attain_tr` in the index of `var_group` and will then use the corresponding value of `var_group` (e.g., `"hs"`) as the row's group. The `sort` argument keeps the new groups in the original order rather than sorting them alphabetically. That's handy because it keeps the rows in increasing order of educational attainment, which is more intuitive than an alphabetical list.
+
+1. Set `by_level` to the result of applying the `.sum()` method and the transpose operator `.T` to `group_by_level` (i.e., `.sum().T`). That does the aggregation and then converts the result back to columns.
 
 1. Set variable `total` equal to `by_level` column `"total"`. That makes a convenient series for use below.
 
 1. Now drop `total` from `by_level`.
+
+1. Write out `by_level` to `'by_level.csv'` using `.to_csv()`.
 
 1. Next, check for problems by setting `error` to the result of applying the `.sum()` method to `by_level` with the argument `axis="columns"` and then subtracting `total`.
 
@@ -136,9 +138,9 @@ Once you're happy with everything and have committed all of the changes to your 
 
 ## Tips
 
-+ A successful API request that returns data will have a status code of 200. If the request is properly constructed but doesn't return any data the status code will be 204. That's almost certainly an indication that you asked for something that doesn't exist, such as state 136 instead of state 36. The API won't tell you that 136 is not a legal state code; rather, it will just return nothing. Other status codes, such as 400, occur when the structure of the request is invalid. An example would be using `'statex:36'` in the `in` clause, where `state` has been misspelled. In this case, `response.text` will provide a very terse error message.
+1. A successful API request that returns data will have a status code of 200. If the request is properly constructed but doesn't return any data the status code will be 204. That's almost certainly an indication that you asked for something that doesn't exist, such as state 136 instead of state 36. The API won't tell you that 136 is not a legal state code; rather, it will just return nothing. Other status codes, such as 400, occur when the structure of the request is invalid. An example would be using `'statex:36'` in the `in` clause, where `state` has been misspelled. In this case, `response.text` will provide a very terse error message.
 
-+ The general form of the Assert statement is `assert logical_condition` where `logical_condition` is a condition that is supposed to be true when the script is working correctly. If the condition is NOT true, the script stops with an assertion error. For example, if you just wanted the script to crash if the status code was not 200 (rather than printing out the messages discussed above), the following would do the trick:
+1. The general form of the Assert statement is `assert logical_condition` where `logical_condition` is a condition that is supposed to be true when the script is working correctly. If the condition is NOT true, the script stops with an assertion error. For example, if you just wanted the script to crash if the status code was not 200 (rather than printing out the messages discussed above), the following would do the trick:
 
     ```python
     assert response.status_code == 200
@@ -146,4 +148,6 @@ Once you're happy with everything and have committed all of the changes to your 
 
     If the status code is, in fact, 200, the assertion is true and the script continues. Otherwise, the script stops. We set things up a little differently here because mistakes are very common when initially setting up API calls and it's helpful to have a little information about what went wrong.
 
-+ Using a CSV file to define the aggregation is very handy and much cleaner and less error-prone than hard-coding it in the script itself. For example, it's much easier to make sure that each variable is linked to exactly one aggregate group. It also makes it easy to change the aggregation later: it's just a matter of editing the CSV file and rerunning the script.
+1. Using a CSV file to define the aggregation is very handy and much cleaner and less error-prone than hard-coding it in the script itself. For example, it's much easier to make sure that each variable is linked to exactly one aggregate group. It also makes it easy to change the aggregation later: it's just a matter of editing the CSV file and rerunning the script.
+
+1. Earlier versions of pandas allowed `.groupby()` to be applied to columns. However, future versions will only allow it to be applied to rows, so to aggregate the columns in `attain` it will be necessary to transpose `attain` (swap the rows and columns), do the aggregation, and then transpose the result back.
