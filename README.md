@@ -6,9 +6,11 @@ This exercise uses the Census API to retrieve data on educational attainment by 
 
 ## Input Data
 
-Most of the data will be obtained from the Census via its API. However, one CSV file, **variable-info.csv**, is provided that will be used to help manage the data retrieval and analysis. The file has three columns. The first, `variable`, contains the names of 25 Census variables, B15003_001E through B15003_025E, which give the number of people aged 25 and older whose final level of education falls in various categories. Be sure to keep in mind that it's the *final* year of education. For example, B15003_016E is the number of people whose final year of education was graduating from high school: it does not include anyone who finished a year of college or more.
+Most of the data will be obtained from the Census via its API. However, one CSV file, **census-info.csv**, is provided that will be used to help manage the data retrieval and analysis. The first five columns were copied and pasted directly from the main Census variable list for table B15003, which provides the number of people with different levels of education. The sixth column ("group") was added for this exercise and will be used for grouping educational levels.
 
-The second column, `description`, has a short Census description for each variable. The third column, `group`, does not come from the Census. Rather, it was added as part of this exercise to facilitate aggregating the data. It takes on one of the following values, depending on the variable described in the row: `'total'`, for the total population 25 and over in the county; `'<hs'` for any level of education below high school graduation; `'hs'` for high school graduation or equivalent; `'some col'` for some college or an Associate's degree; `'ba+'` for a Bachelor's degree or beyond.
+The `"UniqueID"` column contains the base names of 25 Census variables, B15003_001 through B15003_025, which give the number of people aged 25 and older whose final level of education falls in various categories. Be sure to keep in mind that it's the *final* year of education. For example, B15003_016 is the number of people whose final year of education was graduating from high school: it does not include anyone who finished a year of college or more.
+
+The `"group"` column takes on one of the following values, depending on the variable described in the row: `'total'`, for the total population 25 and over in the county; `'<hs'` for any level of education below high school graduation; `'hs'` for high school graduation or equivalent; `'some col'` for some college or an Associate's degree; `'ba+'` for a Bachelor's degree or beyond.
 
 ## Deliverables
 
@@ -24,7 +26,13 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Import `pandas` and `requests`.
 
-1. Set `var_info` to the result of using `pd.read_csv()` to read `'variable-info.csv'`.
+1. Set `var_info` to the result of using `pd.read_csv()` to read `'census-info.csv'`.
+
+1. Set `var_info` to the value of applying `.dropna()` to `var_info` with the argument `subset="UniqueID"`. This removes the initial lines of documentation preceding the variable list.
+
+1. Create a column in `var_info` called `"variable"` that is equal to the values in the `"UniqueID"` column with an `"E"` appended. The "E" indicates "estimate" and is required by the API.
+
+1. Use the `.to_csv()` method of `var_info` to save it to a file called `"variable-info.csv"`. It will be used to aggregate the data in the second script.
 
 1. Set `var_name` to the `'variable'` column of `var_info` with the `.to_list()` method applied to the end. The `to_list()` method converts the Pandas Series into a simple list.
 
@@ -84,7 +92,7 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
     pd.set_option('display.max_rows',None)
     ```
 
-1. Set `var_info` to the result of using `pd.read_csv()` to read `'variable-info.csv'`. Unlike the first time, however, include an additional argument to set the index to the variable name: `index_col='variable'`. This will be convenient later when we aggregate the variables.
+1. Set `var_info` to the result of using `pd.read_csv()` to read `'variable-info.csv'` using the following argument to set the index: `index_col='variable'`. This will be convenient later when we aggregate the variables.
 
 1. Set `var_group` to the `'group'` column of `var_info`. This will be a handy link between the names of the Census variables, which are the index of the series, and the aggregate educational attainment groups, which are the values of the series. See item 3 in the Tips section for why it's handy to use a CSV file for defining how variables should be aggregated.
 
