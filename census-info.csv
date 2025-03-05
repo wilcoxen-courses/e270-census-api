@@ -1,0 +1,28 @@
+Table ID,Line,UniqueID,Stub,Data Release,group
+B15003,,,EDUCATIONAL ATTAINMENT FOR THE POPULATION 25 YEARS AND OVER,"1,5",
+B15003,,,Universe:  Population 25 years and over,,
+B15003,1,B15003_001,Total:,,total
+B15003,2,B15003_002,No schooling completed,,<hs
+B15003,3,B15003_003,Nursery school,,<hs
+B15003,4,B15003_004,Kindergarten,,<hs
+B15003,5,B15003_005,1st grade,,<hs
+B15003,6,B15003_006,2nd grade,,<hs
+B15003,7,B15003_007,3rd grade,,<hs
+B15003,8,B15003_008,4th grade,,<hs
+B15003,9,B15003_009,5th grade,,<hs
+B15003,10,B15003_010,6th grade,,<hs
+B15003,11,B15003_011,7th grade,,<hs
+B15003,12,B15003_012,8th grade,,<hs
+B15003,13,B15003_013,9th grade,,<hs
+B15003,14,B15003_014,10th grade,,<hs
+B15003,15,B15003_015,11th grade,,<hs
+B15003,16,B15003_016,"12th grade, no diploma",,<hs
+B15003,17,B15003_017,Regular high school diploma,,hs
+B15003,18,B15003_018,GED or alternative credential,,hs
+B15003,19,B15003_019,"Some college, less than 1 year",,some col
+B15003,20,B15003_020,"Some college, 1 or more years, no degree",,some col
+B15003,21,B15003_021,Associate's degree,,some col
+B15003,22,B15003_022,Bachelor's degree,,ba+
+B15003,23,B15003_023,Master's degree,,ba+
+B15003,24,B15003_024,Professional school degree,,ba+
+B15003,25,B15003_025,Doctorate degree,,ba+
