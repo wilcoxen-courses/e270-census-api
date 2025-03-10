@@ -22,6 +22,8 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Go to <https://api.census.gov/data/key_signup.html> and request an API key. Strictly speaking, the Census only requires a key if you might make a large number of requests per day. However, it's free and a professional courtesy to the Census to use one, so please sign up.
 
+    It's important to **do this early**: the Census can take **more than a day** to issue and then activate a key. If you have problems getting and activating a key, please note that the instructions for building the request payload provide a workaround.
+
 ### B. Script collect.py
 
 1. Import `pandas` and `requests`.
