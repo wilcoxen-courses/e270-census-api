@@ -34,4 +34,5 @@ makefile
 *.pkl
 *.zip
 
+apikey.txt
 !census-info.csv

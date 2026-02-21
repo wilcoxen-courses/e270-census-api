@@ -46,6 +46,13 @@ print( response.text )
 #     B01001_026E -- female
 #
 
+#
+#  Load my API key
+#
+
+with open('apikey.txt') as fh:
+    apikey = fh.readline().strip()
+
 api = 'https://api.census.gov/data/2018/acs/acs5'
 
 var_list = ['B01001_001E','B01001_002E','B01001_026E']
@@ -55,7 +62,10 @@ variables = ','.join(['NAME']+var_list)
 for_clause = 'county:*'
 in_clause = 'state:36'
 
-payload = { 'get':variables, 'for':for_clause, 'in':in_clause }
+payload = { 'get':variables, 
+            'for':for_clause, 
+            'in':in_clause,
+            'key':apikey }
 
 response = requests.get(api,payload)
 

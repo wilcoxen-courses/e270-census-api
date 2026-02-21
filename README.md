@@ -24,6 +24,10 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
     It's important to **do this early**: the Census can take **more than a day** to issue and then activate a key. If you have problems getting and activating a key, please note that the instructions for building the request payload provide a workaround.
 
+1. Once you have your key, save it in file called `'apikey.txt'`. The file should contain just the key with no extra spaces, text or punctuation.
+
+1. The `.gitignore` file that comes with the assignment already includes the `'apikey.txt'` so GitHub should not attempt to push it to the web. However, in your own work later on, you'll need generally need to add the file with the key to your repository's `.gitignore` file.
+
 ### B. Script collect.py
 
 1. Import `pandas` and `requests`.
@@ -42,6 +46,8 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Set `var_string` to the result of using `join()` to concatenate the elements of `var_list` into a single, comma-separated string. This will be the variable list part of the API call.
 
+1. Read your API key into variable `apikey` by using a `with` statement to open `'apikey.txt'` as file handle `fh` and then set `apikey` to the result of calling `fh.readline().strip()`.
+
 1. Set variable `api` to the American Community Survey 5-Year API endpoint for 2018 as shown below:
 
     ```python
@@ -52,9 +58,7 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Set `in_clause` to `'state:36'`. The "in" clause in a Census query is used for limiting the selected geographic units to those that fall within a larger geographic entity. In this case, the clause indicates that only counties in state 36, which is New York, should be returned.
 
-1. Set `key_value` to your Census API key in quotes.
-
-1. Set `payload` to a new dictionary with the following keys and values: `'get':var_string`, `'for':for_clause`, `'in':in_clause`, and `'key':key_value`. If there's a delay in delivery of your API key and you don't have it yet, leave the `'key':key_value` piece out of the dictionary until it arrives. The API call will work without it.
+1. Set `payload` to a new dictionary with the following keys and values: `'get':var_string`, `'for':for_clause`, `'in':in_clause`, and `'key':apikey`. If there's a delay in delivery of your API key and you don't have it yet, leave the `'key':apikey` piece out of the dictionary until it arrives. The API call will work without it.
 
 1. Set `response` to the value of calling `requests.get()` with arguments `api` and `payload`. The call will build an HTTPS query string, send it to the API endpoint, and collect the response.
 
@@ -96,11 +100,15 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Set `var_info` to the result of using `pd.read_csv()` to read `'variable-info.csv'` using the following argument to set the index: `index_col='variable'`. This will be convenient later when we aggregate the variables.
 
+1. Drop the `"state"` and `"county"` columns from `attain`: they're FIPS codes and will not be used.
+
 1. Set `var_group` to the `'group'` column of `var_info`. This will be a handy link between the names of the Census variables, which are the index of the series, and the aggregate educational attainment groups, which are the values of the series. See item 3 in the Tips section for why it's handy to use a CSV file for defining how variables should be aggregated.
 
 1. Print `var_group`. It's a Pandas series and it will be helpful to see it when you're setting up the `groupby()` call below.
 
 1. Set `attain` to the result of using `pd.read_csv()` to read `'census-data.csv'`. Use the argument `index_col='NAME'` to set the index to the column of county names.
+
+1. Print `attain`.
 
 1. Set `attain_tr` to the transpose of `attain` by applying the `.T` operator: `attain.T`. See item 4 in the Tips section for why it's necessary to transpose the data at this point.
 
@@ -131,6 +139,8 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 1. Print some appropriate text and then print the value of `ratio` for `'Onondaga County, New York'`.
 
 1. Print some appropriate text and then print the full set of ratios sorted from lowest to highest via `ratio.sort_values()`.
+
+1. Print some appropriate text and then print the count of counties with a ratio below 0.5. A convenient way to do this is to create a boolean Series equal to `ratio < 0.5` and then call its `.sum()` method.
 
 1. Now add a new column to `pct` called `"quint"` that is equal to the result of calling the `pd.qcut()` function with arguments `total/1e6` and `5`. As before, `pd.qcut()` divides its argument into quantiles and then returns a series of numbers indicating the quantile of each row. Dividing the total by `1e6` converts the populations into millions, which doesn't change the quantiles but does improve the legend of a graph that will be drawn next.
 
