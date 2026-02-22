@@ -7,6 +7,7 @@ Demonstrate the Census API.
 
 import requests
 import pandas as pd
+import os
 
 pd.set_option('display.max_rows',None)
 
@@ -39,7 +40,7 @@ print( response.text )
 
 #%%
 #
-#  Demonstrate the Census ACS5 endpoint
+#  Demonstrate the Census ACS5 endpoint in more detail.
 #
 #     B01001_001E -- total
 #     B01001_002E -- male
@@ -47,13 +48,14 @@ print( response.text )
 #
 
 #
-#  Load my API key
+#  Set up the endpoint
 #
 
-with open('apikey.txt') as fh:
-    apikey = fh.readline().strip()
+api = 'https://api.census.gov/data/2024/acs/acs5'
 
-api = 'https://api.census.gov/data/2018/acs/acs5'
+#
+#  Build the call
+#
 
 var_list = ['B01001_001E','B01001_002E','B01001_026E']
 
@@ -62,10 +64,28 @@ variables = ','.join(['NAME']+var_list)
 for_clause = 'county:*'
 in_clause = 'state:36'
 
-payload = { 'get':variables, 
-            'for':for_clause, 
-            'in':in_clause,
-            'key':apikey }
+payload = { 'get':variables,
+            'for':for_clause,
+            'in':in_clause }
+
+#%%
+#
+#  Add an API key to the payload if a file with the key exists.
+#  The check for the file is there so the demo script can run
+#  even if you don't have an API key. Normally, you'd just read
+#  the file.
+#
+
+if os.path.exists('apikey.txt'):
+    with open('apikey.txt') as fh:
+        apikey = fh.readline().strip()
+        payload['key'] = apikey
+        print('API key added to payload')
+
+#%%
+#
+#  Make the call
+#
 
 response = requests.get(api,payload)
 

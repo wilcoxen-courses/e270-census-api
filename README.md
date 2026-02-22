@@ -48,10 +48,10 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Read your API key into variable `apikey` by using a `with` statement to open `'apikey.txt'` as file handle `fh` and then set `apikey` to the result of calling `fh.readline().strip()`.
 
-1. Set variable `api` to the American Community Survey 5-Year API endpoint for 2018 as shown below:
+1. Set variable `api` to the American Community Survey 5-Year API endpoint for 2024 as shown below:
 
     ```python
-    api = 'https://api.census.gov/data/2018/acs/acs5'
+    api = 'https://api.census.gov/data/2024/acs/acs5'
     ```
 
 1. Set `for_clause` to `'county:*'`. The left side of the "for" clause in a Census query indicates what kind of geographic unit should be returned and the right side is used to select subsets of the possible records. The asterisk here is a wildcard indicating that data for all eligible counties, subject to the "in" clause below, should be returned.
