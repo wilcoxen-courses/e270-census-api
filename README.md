@@ -100,13 +100,13 @@ The deliverables are two scripts, **collect.py** and **analyze.py**, and a short
 
 1. Set `var_info` to the result of using `pd.read_csv()` to read `'variable-info.csv'` using the following argument to set the index: `index_col='variable'`. This will be convenient later when we aggregate the variables.
 
-1. Drop the `"state"` and `"county"` columns from `attain`: they're FIPS codes and will not be used.
-
 1. Set `var_group` to the `'group'` column of `var_info`. This will be a handy link between the names of the Census variables, which are the index of the series, and the aggregate educational attainment groups, which are the values of the series. See item 3 in the Tips section for why it's handy to use a CSV file for defining how variables should be aggregated.
 
 1. Print `var_group`. It's a Pandas series and it will be helpful to see it when you're setting up the `groupby()` call below.
 
 1. Set `attain` to the result of using `pd.read_csv()` to read `'census-data.csv'`. Use the argument `index_col='NAME'` to set the index to the column of county names.
+
+1. Drop the `"state"` and `"county"` columns from `attain`: they're FIPS codes and will not be used.
 
 1. Print `attain`.
 
